@@ -1,3 +1,5 @@
+# ImDrug: A Benchmark for Deep Imbalanced Learning in AI-aided Drug Discovery
+
 ## Installation
 
 ### Using `conda`

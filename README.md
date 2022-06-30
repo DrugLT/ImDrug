@@ -1,5 +1,7 @@
 # ImDrug: A Benchmark for Deep Imbalanced Learning in AI-aided Drug Discovery
 
+ImDrug is an open-source and systematic benchmark targeting deep imbalanced learning in AI-aided Drug Discovery. ImDrug features modularized components, i.e., dataset curation, standardized evaluation, and baseline algorithms.
+
 ## Installation
 
 ### Using `conda`
@@ -129,8 +131,8 @@ python3 script/test.py --config ./configs/multi_pred/LT_Classification/baseline/
 #### Decoupling
 
 ```bash
-python3 script/train.py --config ./configs/multi_pred/LT_Classification/module_improvement/BalancedSoftmaxCE/USPTO-50k.json
-python3 script/test.py --config ./configs/multi_pred/LT_Classification/module_improvement/BalancedSoftmaxCE/USPTO-50k.json
+python3 script/train.py --config ./configs/multi_pred/LT_Classification/module_improvement/Decoupling/USPTO-50k.json
+python3 script/test.py --config ./configs/multi_pred/LT_Classification/module_improvement/Decoupling/USPTO-50k.json
 ```
 
 ### LT Regression on single_pred.QM9
@@ -161,8 +163,8 @@ python3 script/test.py --config ./configs/multi_pred/LT_Regression/baseline/SBAP
 #### FDS
 
 ```bash
-python3 script/train.py --config ./configs/multi_pred/LT_Regression/FDS/QM9.json
-python3 script/test.py --config ./configs/multi_pred/LT_Regression/FDS/QM9.json
+python3 script/train.py --config ./configs/multi_pred/LT_Regression/FDS/SBAP.json
+python3 script/test.py --config ./configs/multi_pred/LT_Regression/FDS/SBAP.json
 ```
 
 ### Open LT on multi_pred.Drugbank

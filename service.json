@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "imdrug",
+  "private_key_id": "a1a3c0f1bf72c8f86d2d27d20f70283b6740dca4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC6bsbgaHjDurTb\nsGLqIzPKImUBBa3S8xXBVNhpTROw7eUqRZ1xWTdDMGVOt23Am7//eDm39N2diCYB\nIIEQY1VYG/sr1xIjs7T4vj9lSjJNVuytY/HzW2dd7fwaSMXkDGHb7QNGy+hY5+EQ\n/VNj3pf8XZ9qDHPkkUvZK5u5iIfkuts8y19MmNBunXT5XLHyK4mgLnELBq/PGK4k\nhCB706/4Ok0eOINUsb5qCbBVh/6/bOcIrmpeCvqjnQLLjrRPpvwGjPbQCW5PDEE5\nx2MQqBKt83vgprfDWU+f0LcxckSeuER25axSNOW4b8LJF3umihrhBg+Z71Lco4EJ\nnyJEeZ07AgMBAAECggEAEMrPkQD397FGfw85KZu4G3nTnS70xC5vBDXvNDTkFCip\nXpBcqQv/JUcjqN5uvU2KEqmykTY2C+1qdumFloNL+Z6zlfRORvb10v3X2fi/5SVy\nNf/tmBzgh55a+ccaQ/s1iUik5eiR6gggxpX6v+EZ0XphVH0Ap1LLASmjYifBDcH7\nHYhq1rIjH/5wJ9JjXd/WfautOrKQXtGAmOtp1Kgji9AelB1rP9V6kw6Uvyw28MA3\n6VoWMhmDc6sBPYJ3REFZTKVwVB+s0yHgfUrzswqb2rDL3maPuLbP+EwilyyAq123\nPMQv76He1cSnLOmCJTeiG2OOt4i6IZtuRj85rnyH6QKBgQD8rZVJMoNUruE3Di7R\nfdfGf+/UY4g/T6q7RDCCnRW4WZOyp7/ck6x/7cbYF8RbvdFKAvv2WlQ4Pr4ujSPC\ncLWs4+h2hVQ5C71rXn6OYV0OljmxsAFmpv9ydr/wqmYQlqVu+fMVsccYShqJbZWz\nfD8GVoPXXeMqcMBVd6LMV/fpTwKBgQC84jzKz34NBnyzm4hKWN3UUidT6QgV+P6x\nPhZZTXYZGgvv2AFq5T6O/wIa6IE8WzLlEyQjxqoopbqT3Rz6r8ZwDTrx7zOgm0VP\nlSPAbqljiDymReCYZTqnHpDjhvT3BM3leEnxqdkeET6WqQ/wYQh0CTNUPwVG5P09\nRz3H3Q76VQKBgQCjTL/lfYrZCOiuvzDM3Wq9c+OYvPbKC//IZUqAr2rhKKtG1Bkw\nQhRC3XYcJEgYDnYbQhB652f0rcAVr8vDlzoi0WxkZMjI0WiK4pgiBpSwn7ALwTc2\nk4kV/d8Qd9/cqq+iKFHM3IdSkFnUJYmRZSQKQZGVd60fuZzj35zMObIUCwKBgEJl\nzTUGJ6twglmo7QolnyVKE+UdX+hJdU7dIoIWBtPgIh4X8refCpS99AF9hiCvdn6s\nceHZrmtHhwT/j3ZYYAt3uybdDWsB6iWFqeG1hPomJBvXKJKp0yp4RjqVcHt9RtvJ\no0S+jkJRkYzotV+s3IndyhttY+9+A7+M0Zz2ipNZAoGAbt5u7Nz9VVNYleIkJE3H\n9t//daX0QHYaGjHMtkjbo0OF7uPKqdZSf5vHwNlWT+lOk9fO2F4Jy7Gnx+tpNKcc\nxnWBwtXVUMcHyyOUQ8DRffpeJTh/eBRBdn9mMEcyLGqgKLyKjIgo08L4lWBfKveq\nQpSY3gPiSPhoAXuv3fx3kAQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "imdrug@imdrug.iam.gserviceaccount.com",
+  "client_id": "105112987271150480415",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/imdrug%40imdrug.iam.gserviceaccount.com"
+}

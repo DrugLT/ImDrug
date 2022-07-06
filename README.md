@@ -69,7 +69,13 @@ The configuration of algorithms for imbalanced learning can be choosen as follow
 ``'baseline'``: ["Default_cls", "BalancedSoftmax", "ClassBalanced", "InfluenceBalanced", "Remix", "BBN_cls", "OLTR", "IEM"]  
 Note that the suffix "cls" and "reg" indicate that the algorithm can be applied for both classification and regression tasks, respectively.
 
+## Run in Docker
+
+To run in Docker, go to `./script/docker`. First download [Miniconda3-latest-Linux-x86_64.sh](https://repo.anaconda.com/miniconda/) and save it to `./common`. Then run `docker build . -t imdrug` within that directory to build the Docker image tagged with the name imdrug. As an example, you can then run the container interactively with a bash shell with `docker run --rm --runtime=nvidia -it -v [PATH_TO_ImDrug]:/root/code imdrug:latest /bin/bash`.
+
 ## Running Examples
+
+Note that for the following examples, before running ``python3 script/test.py`` for inference, make sure to update cfg["test"]["exp_id"] in the JSON file to specify the experiment id and the saved model to be tested. 
 
 ### LT Classifcation on single_pred.HIV (num_class = 2):
 
@@ -172,15 +178,15 @@ python3 script/test.py --config ./configs/multi_pred/LT_Regression/FDS/SBAP.json
 #### Baseline (CrossEntropy)
 
 ```bash
-python3 script/train.py --config ./configs/multi_pred/LT_Regression/baseline/Drugbank.json
-python3 script/test.py --config ./configs/multi_pred/LT_Regression/baseline/Drugbank.json
+python3 script/train.py --config ./configs/multi_pred/Open_LT/baseline/Drugbank.json
+python3 script/test.py --config ./configs/multi_pred/Open_LT/baseline/Drugbank.json
 ```
 
 #### OLTR
 
 ```bash
-python3 script/train.py --config ./configs/multi_pred/LT_Regression/OLTR/Drugbank.json
-python3 script/test.py --config ./configs/multi_pred/LT_Regression/OLTR/Drugbank.json
+python3 script/train.py --config ./configs/multi_pred/Open_LT/OLTR/Drugbank.json
+python3 script/test.py --config ./configs/multi_pred/Open_LT/OLTR/Drugbank.json
 ```
 
 ### Training output
@@ -190,11 +196,35 @@ Each training process will generate a log (e.g., BBB_Martins_DGL_GCN_Transformer
 
 Note that before testing, you need to specify the training experiment id in cfg['test']['exp_id']. Each testing process will generate a log and a .pdf image of confusion matrix (e.g., BBB_Martins_Transformer_Transformer_MLP_2022-05-09-11-55.pdf) in `./output/${DATASET_NAME}/test`.
 
+### Testing trained models of a dataset all at once
+
+To test trained models all at once, specify the "root_path" in `./test_all.py` by the directory where all training logs are stored, i.e., ``root_path = ./output/${DATASET_NAME}/logs``. Then run the following command line
+
+```bash
+python3 test_all.py 
+```
+
 ## Benchmarks
 
 ### LT Classification 
 
-![](https://storage.googleapis.com/imdrug_data/main_table.png)
+![](https://storage.googleapis.com/imdrug_data/table2.png)
+
+### LT Regression
+
+![](https://storage.googleapis.com/imdrug_data/table4.png)
+
+### Open LT
+
+![](https://storage.googleapis.com/imdrug_data/table3.png)
+
+### Results on Class Subsets
+
+![](https://storage.googleapis.com/imdrug_data/figure2.png)
+
+### Results on Out-of-distribution (OOD) Splits
+
+![](https://storage.googleapis.com/imdrug_data/figure4.png)
 
 <!-- ### LT Classifcation (Metrics: balanced accuracy (BA), balanced-f1 (BF))
 **All results are on test set unless specified otherwise.**
@@ -216,7 +246,7 @@ Note that before testing, you need to specify the training experiment id in cfg[
 | multi_pred.BindingDB_Kd | Baseline            | MSE                              |  NAN                       |
 | multi_pred.BindingDB_Kd | Class Re-balancing  | Balanced MSE                     |                            | -->
 
-## Dataset
+## Datasets
 
 ImDrug is hosted on Google Cloud, each of the data can be accessed via https://storage.googleapis.com/imdrug_data/{$DATASET_NAME}.
 

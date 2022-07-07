@@ -1,6 +1,6 @@
 # ImDrug: A Benchmark for Deep Imbalanced Learning in AI-aided Drug Discovery
 
-ImDrug is an open-source and systematic benchmark targeting deep imbalanced learning in AI-aided Drug Discovery. ImDrug features modularized components, which include formulation of learning setting and tasks, dataset curation, standardized evaluation, and baseline algorithms.
+ImDrug is an open-source and systematic benchmark targeting deep imbalanced learning in AI-aided Drug Discovery. ImDrug features modularized components including formulation of learning setting and tasks, dataset curation, standardized evaluation, and baseline algorithms.
 
 ## Installation
 

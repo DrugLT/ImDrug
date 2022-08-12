@@ -1,0 +1,45 @@
+{
+    "dataset": {
+        "drug_encoding": "DGL_GCN", 
+        "protein_encoding": "Transformer", 
+        "tier1_task": "single_pred", 
+        "tier2_task": "ADME", 
+        "dataset_name": "BBB_Martins",
+        "split":{
+            "method": "random"
+        }
+
+    },
+    "loss": {
+        "type": "CrossEntropy"
+    },
+    "train": {
+        "batch_size": 128,
+        "combiner": {
+            "type": "default"
+        },
+        "two_stage": {
+            "drw": false,
+            "drs": false,
+            "start_epoch": 0
+        },
+        "lr_scheduler": {
+            "type": "warmup",
+            "warmup_epoch": 20,
+            "lr_step": [120, 160]
+        }
+    },
+
+    "test": {
+        "batch_size": 64,
+        "exp_id": "BBB_Martins_DGL_GCN_Transformer_MLP_2022-04-28-20-35"
+    },
+    "setting": {
+        "type": "LT Classification", 
+        "num_class": 10 
+    },
+    "use_gpu": true,
+    "save_step": 5,
+    "show_step": 5,
+    "valid_step": 1
+}

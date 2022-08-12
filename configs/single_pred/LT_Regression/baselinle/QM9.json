@@ -1,0 +1,26 @@
+{
+    "dataset": {
+        "drug_encoding": "DGL_GCN", 
+        "protein_encoding": "Transformer", 
+        "tier1_task": "single_pred", 
+        "tier2_task": "QM", 
+        "dataset_name": "qm9",
+        "split":{
+            "method": "random",
+            "by_class": false,
+            "label_name": "mu"
+        }
+    },
+    "baseline": "Default_reg",
+    "test": {
+        "exp_id": "qm9_DGL_GCN_CrossEntropy_0_MLP_2022-06-09-00-10-53-662280"
+    },
+    "setting": {
+        "type": "LT Regression",
+        "num_class": 10 
+    },
+    "use_gpu": true,
+    "save_step": 5,
+    "show_step": 5,
+    "valid_step": 1
+}

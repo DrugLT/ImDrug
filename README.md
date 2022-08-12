@@ -208,7 +208,7 @@ python3 test_all.py
 
 ### LT Classification 
 
-![](https://storage.googleapis.com/imdrug_data/table2.png)
+![](https://drive.google.com/file/d/1VvNGCWS-KHZV5I5npLdEIKtNsUUQ0kEb/view?usp=sharing)
 
 ### LT Regression
 

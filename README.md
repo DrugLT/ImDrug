@@ -208,15 +208,15 @@ python3 test_all.py
 
 ### LT Classification 
 
-![](https://storage.googleapis.com/imdrug_data/Figures/table2_latest.png?)
+![](https://storage.googleapis.com/imdrug_data/Figures/table2_latest.png)
 
 ### LT Regression
 
-![](https://storage.googleapis.com/imdrug_data/Figures/table4_latest.png?)
+![](https://storage.googleapis.com/imdrug_data/Figures/table4_latest.png)
 
 ### Open LT
 
-![](https://storage.googleapis.com/imdrug_data/Figures/table3_latest.png?)
+![](https://storage.googleapis.com/imdrug_data/Figures/table3_latest.png)
 
 ### Results on Class Subsets
 

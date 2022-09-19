@@ -208,23 +208,23 @@ python3 test_all.py
 
 ### LT Classification 
 
-![](https://storage.googleapis.com/imdrug_data/Figures/table2.pdf)
+![](https://storage.googleapis.com/imdrug_data/Figures/table2.png)
 
 ### LT Regression
 
-![](https://storage.googleapis.com/imdrug_data/Figures/table4.pdf)
+![](https://storage.googleapis.com/imdrug_data/Figures/table4.png)
 
 ### Open LT
 
-![](https://storage.googleapis.com/imdrug_data/Figures/table3.pdf)
+![](https://storage.googleapis.com/imdrug_data/Figures/table3.png)
 
 ### Results on Class Subsets
 
-![](https://storage.googleapis.com/imdrug_data/Figures/figure2.pdf)
+![](https://storage.googleapis.com/imdrug_data/Figures/figure2.png)
 
 ### Results on Out-of-distribution (OOD) Splits
 
-![](https://storage.googleapis.com/imdrug_data/Figures/figure4.pdf)
+![](https://storage.googleapis.com/imdrug_data/Figures/figure4.png)
 
 <!-- ### LT Classifcation (Metrics: balanced accuracy (BA), balanced-f1 (BF))
 **All results are on test set unless specified otherwise.**
@@ -267,7 +267,7 @@ Complete list of dataset_names:
 Coming soon.
 
 ## License
-ImDrug codebase is under MIT license. For individual dataset usage, the dataset license will come up soon.
+ImDrug codebase is under the MIT license. For individual dataset usage, the dataset license will come up soon.
 
 ## Contact
 

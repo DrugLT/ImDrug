@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import copy
 import numpy as np
 import os
-import utils
+# import utils
 # from backbone import 
 from neck import GAP, Identity, Concat
 from head import LWS, FCNorm, MLP
@@ -36,7 +36,7 @@ class Network(nn.Module):
         self.mode = mode
         self.neck = self._get_neck()
         self.head = self._get_head()
-        self.networks = list(self.backbone.values()) + [self.neck] + [self.head]
+        self.networks = [getattr(self, backbone_kw) for backbone_kw in self.backbone_kws] + [self.neck] + [self.head]
 
         # if cfg['network']['pretrained'] and os.path.isfile(cfg['network']['pretrained_model']):
         #     try:
@@ -46,7 +46,15 @@ class Network(nn.Module):
 
     def forward(self, x, **kwargs):
         if "feature_flag" in kwargs or "feature_cb" in kwargs or "feature_rb" in kwargs:
-            return self.extract_feature(x, **kwargs)
+            x, att_mat_lst = self.extract_feature(x, **kwargs)
+            att_mats = []
+            for att_mat in att_mat_lst:
+                att_mat = torch.stack(att_mat).squeeze()
+                att_mat = torch.mean(att_mat, dim=(2, 3)) # average over all heads
+                # print('att_mat', att_mat.shape)
+                # print('att_mat', att_mat[:, 0])
+                att_mats.append(att_mat)
+            return x, att_mats
         elif "head_flag" in kwargs:
             return self.head(x)
         elif 'feature_maps_flag' in kwargs:
@@ -65,13 +73,20 @@ class Network(nn.Module):
                 x = kwargs['coef']*x + (1-kwargs['coef'])*x[kwargs['index']]
             return x
 
-        x = self.extract_feature(x)
+        x, att_mat_lst = self.extract_feature(x)
+
+        att_mats = []
+        for att_mat in att_mat_lst:
+            att_mat = torch.stack(att_mat).squeeze(1)
+            att_mat = torch.mean(att_mat, dim=1)
+            # print('att_mat', att_mat.shape)
+            att_mats.append(att_mat)
         x = self.head(x)
-        return x
+        return x, att_mats
 
     def to(self, device=None):
-        if device is None:
-            device = utils.device
+        # if device is None:
+        #     device = utils.device
         for net in self.networks:
             net.to(device)
             # net.apply(utils.init_weight)
@@ -103,32 +118,44 @@ class Network(nn.Module):
             self.load_state_dict(model_dict)
             print("Backbone model {} has been loaded......".format(key))
     
-    def load_model(self, model_file):
-        self.load_state_dict(torch.load(model_file)['state_dict'])
+    def load_model(self, model_file, map_location=None):
+        self.load_state_dict(torch.load(model_file, map_location=map_location)['state_dict'])
 
     def extract_feature(self, inputs:list, **kwargs):
-        x = self.extract_feature_maps(inputs)
+        x, att_mat_lst = self.extract_feature_maps(inputs)
+        # print('x', x, x.shape)
         x = x.view(x.shape[0], -1)
-        return x
+        # print('x_view', x, x.shape)
+        return x, att_mat_lst
 
     def extract_feature_maps(self, inputs: list):
         feats = []
+        att_mat_lst = [] # list of attention matrices, each element corresponds to the attention matrix of a backbone model: [att_mat_backbone1, ..., att_mat_backboneN]
         for x, backbone_kw in zip(inputs, self.backbone_kws):
             if 'protein' in backbone_kw and self.cfg['dataset']['protein_encoding'] == 'Transformer':
                 x = torch.transpose(x, 0, 1)
             elif 'drug' in backbone_kw  and self.cfg['dataset']['drug_encoding'] == 'Transformer':
                 x = torch.transpose(x, 0, 1)
-            feat = self.backbone[backbone_kw](x)
+            # feat = self.backbone[backbone_kw](x)
+            feat = getattr(self, backbone_kw)(x) # feat = (feature_map, attention_map) if the model outputs attention maps
 
+            if isinstance(feat, tuple):
+                att_mat_lst.append(feat[1])
+                feat = feat[0]
+            else:
+                att_mat_lst.append([])
+            # print('feat', feat, feat.shape)
             feats.append(feat)
+
         x = self.neck(feats, self.input_kws)
-        return x
+        return x, att_mat_lst
 
     def _get_backbone(self):
-        self.backbone = {}
+        # self.backbone = {}
         for backbone_kw in set(self.backbone_kws):
             assert hasattr(self.model, backbone_kw), 'no backbone model for input type {}'.format(backbone_kw)
-            self.backbone[backbone_kw] = getattr(self.model, backbone_kw)
+            # self.backbone[backbone_kw] = getattr(self.model, backbone_kw)
+            self.add_module(backbone_kw, getattr(self.model, backbone_kw))
 
     def _get_neck(self):
         layer_type = self.cfg['neck']['type']

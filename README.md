@@ -173,7 +173,7 @@ python3 script/train.py --config ./configs/multi_pred/LT_Regression/FDS/SBAP.jso
 python3 script/test.py --config ./configs/multi_pred/LT_Regression/FDS/SBAP.json
 ```
 
-### Open LT on multi_pred.Drugbank
+### Open LT on multi_pred.Drugbank (num_class = 86)
 
 #### Baseline (CrossEntropy)
 
@@ -190,7 +190,7 @@ python3 script/test.py --config ./configs/multi_pred/Open_LT/OLTR/Drugbank.json
 ```
 
 ### Training output
-Each training process will generate a log (e.g., BBB_Martins_DGL_GCN_Transformer_MLP_2022-04-28-20-30.log) in `./output/${DATASET_NAME}/logs`, and the models in `./output/${DATASET_NAME}/models/${EXP_ID}`. 
+Each training process will generate a log (e.g., hiv_DGL_GCN_Transformer_MLP_2022-04-28-20-30.log) in `./output/${DATASET_NAME}/logs`, and the models in `./output/${DATASET_NAME}/models/${EXP_ID}`. 
 
 ### Testing output
 
@@ -264,11 +264,19 @@ Complete list of dataset_names:
 - uspto_yields.csv
 
 ## Cite Us
-Coming soon.
+```
+@article{li2022imdrug,
+  title={ImDrug: A Benchmark for Deep Imbalanced Learning in AI-aided Drug Discovery},
+  author={Li, Lanqing and Zeng, Liang and Gao, Ziqi and Yuan, Shen and Bian, Yatao and Wu, Bingzhe and Zhang, Hengtong and Lu, Chan and Yu, Yang and Liu, Wei and others},
+  journal={arXiv preprint arXiv:2209.07921},
+  year={2022}
+}
+
+```
 
 ## License
 ImDrug codebase is under the MIT license. For individual dataset usage, the dataset license will come up soon.
 
 ## Contact
 
-Reach us at imdrugbenchmark@gmail.com or open a GitHub issue.
+Reach us at imdrugbenchmark@gmail.com, lanqingli1993@gmail.com or open a GitHub issue.

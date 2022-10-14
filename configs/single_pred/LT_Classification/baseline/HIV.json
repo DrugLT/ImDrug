@@ -3,7 +3,7 @@
         "drug_encoding": "DGL_GCN", 
         "protein_encoding": "Transformer", 
         "tier1_task": "single_pred", 
-        "tier2_task": "HTS", 
+        "tier2_task": "BioAct", 
         "dataset_name": "HIV",
         "split":{
             "method": "random",

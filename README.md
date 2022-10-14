@@ -248,7 +248,11 @@ python3 test_all.py
 
 ## Datasets
 
-ImDrug is hosted on Google Cloud, each of the data can be accessed via https://storage.googleapis.com/imdrug_data/{$DATASET_NAME}.
+ImDrug is hosted on Google Cloud and Google Drive.
+
+For manual download, please use this [link](https://drive.google.com/drive/folders/16dSuqq-Fh6iGqjPL1phtQT3C_K70cCfK).
+
+Alternatively, if you run any of the command lines in [Running Examples](#running-examples), the necessary datasets will be automatically downloaded to the `path` specified in `./lib/config/default.py`, from https://storage.googleapis.com/imdrug_data/{$DATASET_NAME}.
 
 Complete list of dataset_names:
 - bbb_martins.tab

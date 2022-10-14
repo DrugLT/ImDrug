@@ -182,7 +182,6 @@ dependencies:
     - cachetools==5.0.0
     - cloudpickle==2.0.0
     - deeppurpose==0.1.5
-    - descriptastorus==2.3.0.6
     - dgllife==0.2.9
     - fonttools==4.33.3
     - formulaic==0.3.3

@@ -1,0 +1,5 @@
+data/
+output/
+**/*.pyc
+**/*.log
+**/*.pth

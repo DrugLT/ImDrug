@@ -250,7 +250,7 @@ python3 test_all.py
 
 ImDrug is hosted on Google Cloud and Google Drive.
 
-For manual download, please use this [link](https://drive.google.com/drive/folders/16dSuqq-Fh6iGqjPL1phtQT3C_K70cCfK) (*recommended*).
+For manual download, please use this [link](https://drive.google.com/drive/folders/16dSuqq-Fh6iGqjPL1phtQT3C_K70cCfK) (***recommended***).
 
 Alternatively, if you run any of the command lines in [Running Examples](#running-examples), the necessary datasets will be automatically downloaded to the `path` specified in `./lib/config/default.py`, from https://storage.googleapis.com/imdrug_data/{$DATASET_NAME}.
 

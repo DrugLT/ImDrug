@@ -276,7 +276,7 @@ Complete list of dataset_names:
 ```
 
 ## License
-ImDrug codebase is under the MIT license. The datasets are hosted on Harvard Dataverse under the CC0 1.0.
+ImDrug codebase is under the MIT license. The datasets are hosted on Harvard Dataverse under the CC0 1.0 license.
 
 ## Contact
 

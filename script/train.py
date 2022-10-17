@@ -60,7 +60,6 @@ def train():
 
     # close loop 
     model_dir = osp.join(cfg['output_dir'], cfg['dataset']['dataset_name'], "models", exp_id)
-    # code_dir = osp.join(cfg['output_dir'], cfg['dataset']['dataset_name'], "code")
     
     tensorboard_dir = (
         os.path.join(cfg['output_dir'], cfg['name'], "tensorboard")

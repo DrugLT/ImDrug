@@ -150,23 +150,19 @@ dataset_list = []
 for i in dataset_names.keys():
     dataset_list = dataset_list + [i.lower() for i in dataset_names[i]]
 
-name2type = {'toxcast': 'tab',
+name2type = {
  'tox21': 'tab',
  'bbb_martins': 'tab',
  'hiv': 'tab',
- 'drugbank': 'csv',
- 'uspto50k': 'tab',
- 'qm9': 'csv',
- 'uspto_50k': 'csv',
- 'uspto_1k_TPL': 'csv',
- 'uspto_500_MT': 'csv',
- 'uspto_yields': 'csv',
- 'uspto_catalyst': 'csv',
- 'test_single_pred': 'tab',
- 'test_multi_pred': 'tab',
- 'protein_16-4096': 'csv',
- 'sbap': 'csv',
- 'sbap_reg': 'csv'}
+ 'drugbank': 'tab',
+ 'qm9': 'tab',
+ 'uspto_50k': 'tab',
+ 'uspto_1k_TPL': 'tab',
+ 'uspto_500_MT': 'tab',
+ 'uspto_yields': 'tab',
+ 'uspto_catalyst': 'tab',
+ 'sbap': 'tab',
+ 'sbap_reg': 'tab'}
 
 name2stats = {
 	'bbb_martins': 1975,
@@ -175,9 +171,9 @@ name2stats = {
 	'qm9': 133885,
 	'sbap': 32140,
 	'uspto_yields': 853638,
-	'uspto-50k': 50016,
-	'uspto-500-MT': 143535,
-	'uspto-1k-TPL': 445115,
+	'uspto_50k': 50016,
+	'uspto_500_MT': 143535,
+	'uspto_1k_TPL': 445115,
 	'drugbank': 191808,
 	'uspto_catalyst': 721799,
 }
@@ -195,6 +191,21 @@ name2imratio = {
 	'uspto_yields': 7.59,
 	'drugbank': 10124.67
 }
+
+name2id = {
+	'bbb_martins': 6573960,
+	'tox21': 6573958,
+	'hiv': 6573954,
+	'qm9': 6573956,
+	'sbap': 6573959,
+	'uspto_yields': 6573961,
+	'uspto_50k': 6573953,
+	'uspto_500_MT': 6573955,
+	'uspto_1k_TPL': 6573963,
+	'drugbank': 6573957,
+	'uspto_catalyst': 6573962,
+}
+
 
 metrics = {'LT Classification': ['balanced_accuracy', 'balanced-f1', 'roc-auc'],
 		   'Open LT': ['balanced_accuracy', 'balanced-f1', 'roc-auc'],

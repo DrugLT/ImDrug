@@ -15,7 +15,8 @@ class Combiner:
         self.cfg = cfg
         self.type = cfg['train']['combiner']['type']
         self.device = device
-        self.num_class_list = torch.FloatTensor(num_class_list)
+        if num_class_list is not None:
+            self.num_class_list = torch.FloatTensor(num_class_list)
         self.epoch_number = cfg['train']['max_epoch']
         self.func = torch.nn.Sigmoid() \
             if cfg['loss']['type'] in ['FocalLoss', 'ClassBalanceFocal'] else \

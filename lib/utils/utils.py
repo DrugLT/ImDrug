@@ -160,7 +160,7 @@ def get_model(cfg, device, logger, entity_type: list):
 
     return model
 
-def get_dataset(cfg):
+def get_dataset(cfg, test=False):
     if cfg['dataset']['tier1_task'] == 'single_pred':
         from dataset.single_pred import ADME, QM, TestSinglePred, Tox, Yields, ReactType, Transposition, BioAct
     elif cfg['dataset']['tier1_task'] == 'multi_pred':
@@ -200,14 +200,22 @@ def get_dataset(cfg):
 
     dataset_dic = dataset.get_split(seed=cfg['seed'], label_type=label_type, \
         num_class=num_class, **cfg['dataset']['split'])
-    train_set = Dataset(cfg=cfg, data_df=dataset_dic['train'], entities=dataset.entities, \
-        entity_type=dataset.entity_type, mode='train')
-    valid_set = Dataset(cfg=cfg, data_df=dataset_dic['valid'], entities=dataset.entities, \
-        entity_type=dataset.entity_type, mode='valid')
-    test_set = Dataset(cfg=cfg, data_df=dataset_dic['test'], entities=dataset.entities, \
-        entity_type=dataset.entity_type, mode='test')
+    if not test:
+        train_set = Dataset(cfg=cfg, data_df=dataset_dic['train'], entities=dataset.entities, \
+            entity_type=dataset.entity_type, mode='train')
+        valid_set = Dataset(cfg=cfg, data_df=dataset_dic['valid'], entities=dataset.entities, \
+            entity_type=dataset.entity_type, mode='valid')
+        # test_set = Dataset(cfg=cfg, data_df=dataset_dic['test'], entities=dataset.entities, \
+        #     entity_type=dataset.entity_type, mode='test')
 
-    return {'train_set': train_set, 'valid_set': valid_set, 'test_set': test_set}
+        return {'train_set': train_set, 'valid_set': valid_set, 'dataset_dic': dataset_dic}
+    
+    else:
+        test_set = Dataset(cfg=cfg, data_df=dataset_dic['test'], entities=dataset.entities, \
+            entity_type=dataset.entity_type, mode='test')
+
+        return {'test_set': test_set, 'dataset_dic': dataset_dic}
+    
 
 def get_category_list(dataset: torch.utils.data.Dataset):
     label_name = dataset.label_name

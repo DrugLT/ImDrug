@@ -69,15 +69,16 @@ def test():
 
 
     # ----- BEGIN DATASET BUILDER -----
-    datasets = get_dataset(cfg)
+    datasets = get_dataset(cfg, test=True)
     test_set = datasets['test_set']
+    print('dataset', datasets)
     entity_type = test_set.entity_type
 
     # ----- END DATASET BUILDER -----
 
     if cfg['setting']['type'] not in ['LT Regression', 'LT Generation']:
         num_class_list = get_category_list(test_set)
-        num_classes = len(num_class_list)
+        num_classes = len(num_class_list) - 1 # the model was trained only with closes sets, without the outlier class in the open set
         para_dict = {
             "num_classes": num_classes,
             "num_class_list": num_class_list,
@@ -121,7 +122,7 @@ def test():
 
     test_model(testLoader, model, cfg, logger, device)
 
-    if __name__ == "__main__":
+if __name__ == "__main__":
 
     path = "../configs/single_pred/LT_Regression/baseline/QM9.json"
 

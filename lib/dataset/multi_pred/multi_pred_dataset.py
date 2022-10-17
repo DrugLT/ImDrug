@@ -110,26 +110,29 @@ class DataLoader(base_dataset.DataLoader):
 				method = method.replace('open-', '')
 
 				if method == 'random':
-					return create_fold_byclass(df=df, seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, num_class=num_class, label_type=label_type, scale=scale)
+					data_dic = create_fold_byclass(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, num_class=num_class, label_type=label_type, scale=scale)
 			
 				elif method == 'cold_split':
 					if isinstance(column_name, str):
 						column_name = [column_name]
 					if ((column_name is None) or (not all([x in df.columns.values for x in column_name]))):
 						raise AttributeError( "For cold_split, please provide one or multiple column names that are contained in the dataframe.")		
-					return create_fold_setting_cold_byclass(df=df, seed=seed, frac=frac, lt_frac=lt_frac, column_name=column_name, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, 
+					data_dic = create_fold_setting_cold_byclass(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, column_name=column_name, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, 
 														    num_class=num_class, label_type=label_type, scale=scale)
 				
 				elif method == 'combination':
-					return create_combination_split_by_class(df=df, seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, 
+					data_dic = create_combination_split_by_class(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, 
 															 num_class=num_class, label_type=label_type, scale=scale)
 				elif method == 'time':
-					return create_fold_time_byclass(df=df, frac=frac, time_column=time_column, lt_frac=lt_frac, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, 
+					data_dic = create_fold_time_byclass(df=closed_df, frac=frac, time_column=time_column, lt_frac=lt_frac, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, 
 													num_class=num_class, label_type=label_type, scale=scale)
+				elif method == 'standard':
+					data_dic = create_standard_fold(df=closed_df, fold_seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name, label_weight_name=label_weight_name, lt_label_name=lt_label_name, num_class=num_class, label_type=label_type, scale=scale)
 				else:
 					raise AttributeError("Please select a splitting strategy from random, cold_split, or combination.")
 
 				data_dic['test'] = data_dic['test'].append(open_df) # merge test set for closed and open classes
+				print('data_dic', data_dic)
 				return data_dic
 			else:
 				if method == 'random':
@@ -149,6 +152,8 @@ class DataLoader(base_dataset.DataLoader):
 				elif method == 'time':
 					return create_fold_time_byclass(df=df, frac=frac, time_column=time_column, lt_frac=lt_frac, label_name=label_name,  label_weight_name=label_weight_name, lt_label_name=lt_label_name, 
 													num_class=num_class, label_type=label_type, scale=scale)
+				elif method == 'standard':
+					return create_standard_fold(df=df, fold_seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name, label_weight_name=label_weight_name, lt_label_name=lt_label_name, num_class=num_class, label_type=label_type, scale=scale)
 				else:
 					raise AttributeError("Please select a splitting strategy from random, cold_split, or combination.")
 

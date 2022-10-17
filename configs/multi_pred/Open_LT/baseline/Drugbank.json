@@ -6,13 +6,13 @@
         "tier2_task": "DDI", 
         "dataset_name": "drugbank",
         "split":{
-            "method": "random",
+            "method": "open-random",
             "by_class": true
         }
     },
     "baseline": "Default_cls",
     "test": {
-        "exp_id": "drugbank_DGL_GCN_CrossEntropy_0_MLP_2022-06-09-00-10-53-662280"
+        "exp_id": "drugbank_DGL_GCN_CrossEntropy_2_MLP_2022-10-17-20-56-43-701139"
     },
     "setting": {
         "type": "Open LT",

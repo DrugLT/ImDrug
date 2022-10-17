@@ -7,7 +7,7 @@ import pandas as pd
 from pandas.errors import EmptyDataError
 from tqdm import tqdm
 
-from metadata import name2type, dataset_list, dataset_names
+from metadata import name2type, dataset_list, dataset_names, name2id
 # for generation from TDC
 # from metadata import property_names, paired_dataset_names, single_molecule_dataset_names
 # from metadata import retrosyn_dataset_names, forwardsyn_dataset_names, molgenpaired_dataset_names, generation_datasets
@@ -33,7 +33,9 @@ def download_wrapper(name, path, dataset_names):
 	    str: the exact dataset query name
 	"""
 	name = fuzzy_search(name, dataset_names)
+	server_path = 'https://dataverse.harvard.edu/api/access/datafile/'
 
+	dataset_path = server_path + str(name2id[name])
 	if not os.path.exists(path):
 		os.mkdir(path)
 
@@ -42,7 +44,8 @@ def download_wrapper(name, path, dataset_names):
 		print_sys('Found local copy...')
 	else:
 		print_sys("Downloading...")
-		googlecloud_download(bucket_name, path, name, name2type)
+		dataverse_download(dataset_path, path, name, name2type)
+		# googlecloud_download(bucket_name, path, name, name2type)
 	return name
 
 def zip_data_download_wrapper(name, path, dataset_names):
@@ -57,7 +60,9 @@ def zip_data_download_wrapper(name, path, dataset_names):
 	    str: the exact dataset query name
 	"""
 	name = fuzzy_search(name, dataset_names)
+	server_path = 'https://dataverse.harvard.edu/api/access/datafile/'
 
+	dataset_path = server_path + str(name2id[name])
 	if not os.path.exists(path):
 		os.mkdir(path)
 
@@ -65,7 +70,8 @@ def zip_data_download_wrapper(name, path, dataset_names):
 		print_sys('Found local copy...')
 	else:
 		print_sys('Downloading...')
-		googlecloud_download(bucket_name, path, name, name2type)
+		dataverse_download(dataset_path, path, name, name2type)
+		# googlecloud_download(bucket_name, path, name, name2type)
 		print_sys('Extracting zip file...')
 		with ZipFile(os.path.join(path, name + '.zip'), 'r') as zip:
 			zip.extractall(path = os.path.join(path))
@@ -73,7 +79,7 @@ def zip_data_download_wrapper(name, path, dataset_names):
 	return name
 
 def dataverse_download(url, path, name, types):
-	"""dataverse download helper with progress bar, for TDC datasets (https://tdcommons.ai/)
+	"""dataverse download helper with progress bar, for ImDrug datasets hosted on Harvard Dataverse
 	
 	Args:
 	    url (str): the url of the dataset
@@ -93,30 +99,30 @@ def dataverse_download(url, path, name, types):
 	progress_bar.close()
 
 
-def googlecloud_download(bucket_name, path, name, types):
-	"""Downloads a dataset from Google Cloud bucket (default method for ImDrug).
+# def googlecloud_download(bucket_name, path, name, types):
+# 	"""Downloads a dataset from Google Cloud bucket (default method for ImDrug).
 
-	Args:
-		bucket_name (str): the ID of the GCS bucket
-		path (str): path to which the file should be downloaded
-		name (str): the dataset name
-		types (dict): a dictionary mapping from the dataset name to the file format
-	"""
-	from google.cloud import storage
-	storage_client = storage.Client()
-	bucket = storage_client.bucket(bucket_name)
-	source_blob_name = name + '.' + types[name]
+# 	Args:
+# 		bucket_name (str): the ID of the GCS bucket
+# 		path (str): path to which the file should be downloaded
+# 		name (str): the dataset name
+# 		types (dict): a dictionary mapping from the dataset name to the file format
+# 	"""
+# 	from google.cloud import storage
+# 	storage_client = storage.Client()
+# 	bucket = storage_client.bucket(bucket_name)
+# 	source_blob_name = name + '.' + types[name]
 
-	# Construct a client side representation of a blob.
-	# Note `Bucket.blob` differs from `Bucket.get_blob` as it doesn't retrieve
-	# any content from Google Cloud Storage. As we need additional data for progress bar,
-	# using `Bucket.blob` is preferred here.
-	blob = bucket.get_blob(source_blob_name)
-	destination_file_name = os.path.join(path, source_blob_name)
-	with open(destination_file_name, 'wb') as f:
-		with tqdm.wrapattr(f, "write", total=blob.size) as file_obj:
-			# blob.download_to_file is deprecated
-			storage_client.download_blob_to_file(blob, file_obj)
+# 	# Construct a client side representation of a blob.
+# 	# Note `Bucket.blob` differs from `Bucket.get_blob` as it doesn't retrieve
+# 	# any content from Google Cloud Storage. As we need additional data for progress bar,
+# 	# using `Bucket.blob` is preferred here.
+# 	blob = bucket.get_blob(source_blob_name)
+# 	destination_file_name = os.path.join(path, source_blob_name)
+# 	with open(destination_file_name, 'wb') as f:
+# 		with tqdm.wrapattr(f, "write", total=blob.size) as file_obj:
+# 			# blob.download_to_file is deprecated
+# 			storage_client.download_blob_to_file(blob, file_obj)
 
 # def oracle_download_wrapper(name, path, oracle_names):
 # 	"""wrapper for downloading an oracle model checkpoint given the name and path
@@ -230,7 +236,8 @@ def pd_load(name, path):
 		return df
 	except (EmptyDataError, EOFError) as e:
 		import sys
-	sys.exit("ImDrug is hosted on Google Cloud and it is currently unavailable, please check back in a few hours")
+	sys.exit("ImDrug is hosted in Harvard Dataverse and it is currently under maintenance, please check back in a few hours")
+	# sys.exit("ImDrug is hosted on Google Cloud and it is currently unavailable, please check back in a few hours")
 
 def property_dataset_load(name, path, target, dataset_names):
 	"""a wrapper to download, process and load single-instance prediction task datasets
@@ -239,7 +246,7 @@ def property_dataset_load(name, path, target, dataset_names):
 	    name (str): the rough dataset name
 	    path (str): the dataset path to save/retrieve
 	    target (str): for multi-label dataset, retrieve the label of interest
-	    dataset_names (list): a list of availabel exact dataset names
+	    dataset_names (list): a list of available exact dataset names
 	
 	Returns:
 	    pandas.Series: three series (entity representation, label, entity id)
@@ -270,10 +277,11 @@ def property_dataset_load(name, path, target, dataset_names):
 			# flag = 'Service Unavailable' in ' '.join(f.readlines())
 			if flag:
 				import sys
-				sys.exit("ImDrug is hosted on Google Cloud and it is currently unavailable, please check back in a few hours")
+				sys.exit("ImDrug is hosted in Harvard Dataverse and it is currently under maintenance, please check back in a few hours")
+				# sys.exit("ImDrug is hosted on Google Cloud and it is currently unavailable, please check back in a few hours")
 			else:
 				import sys 
-				sys.exit("Please report this error to imdrugbenchmark@gmail.com, thanks!")
+				sys.exit("Please report this error to lanqingli1993@gmail.com and imdrugbenchmark@gmail.com, thanks!")
 	try:
 		return df['X'], df[target], df['ID']
 	except:
@@ -317,10 +325,11 @@ def interaction_dataset_load(name, path, target, dataset_names, aux_column):
 			flag = 'Service Unavailable' in ' '.join(f.readlines())
 			if flag:
 				import sys
-				sys.exit("ImDrug is hosted on Google Cloud and it is currently unavailable, please check back in a few hours")
+				sys.exit("ImDrug is hosted in Harvard Dataverse and it is currently under maintenance, please check back in a few hours")
+				# sys.exit("ImDrug is hosted on Google Cloud and it is currently unavailable, please check back in a few hours")
 			else:
 				import sys 
-				sys.exit("Please report this error to imdrugbenchmark@gmail.com, thanks!")
+				sys.exit("Please report this error to lanqingli1993@gmail.com and imdrugbenchmark@gmail.com, thanks!")
 
 
 def multi_dataset_load(name, path, dataset_names):

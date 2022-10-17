@@ -2,7 +2,7 @@
     "dataset": {
         "drug_encoding": "DGL_GCN", 
         "protein_encoding": "Transformer", 
-        "tier1_task": "multi_pred", 
+        "tier1_task": "single_pred", 
         "tier2_task": "ReactType", 
         "dataset_name": "uspto_500_MT",
         "split":{

@@ -6,7 +6,7 @@
         "tier2_task": "DDI", 
         "dataset_name": "drugbank",
         "split":{
-            "method": "random",
+            "method": "open-random",
             "by_class": true
         }
     },

@@ -98,15 +98,15 @@ python3 script/test.py --config ./configs/single_pred/LT_Classification/informat
 #### Baseline (CrossEntropy)
 
 ```bash
-python3 script/train.py --config ./configs/single_pred/LT_Classification/baseline/SBAP.json
-python3 script/test.py --config ./configs/single_pred/LT_Classification/baseline/SBAP.json
+python3 script/train.py --config ./configs/multi_pred/LT_Classification/baseline/SBAP.json
+python3 script/test.py --config ./configs/multi_pred/LT_Classification/baseline/SBAP.json
 ```
 
 #### BBN
 
 ```bash
-python3 script/train.py --config ./configs/single_pred/LT_Classification/module_improvement/BBN/SBAP.json
-python3 script/test.py --config ./configs/single_pred/LT_Classification/module_improvement/BBN/SBAP.json
+python3 script/train.py --config ./configs/multi_pred/LT_Classification/module_improvement/BBN/SBAP.json
+python3 script/test.py --config ./configs/multi_pred/LT_Classification/module_improvement/BBN/SBAP.json
 ```
 
 ### LT Classification on single_pred.UPSTO-50k (num_class = 10):
@@ -190,15 +190,15 @@ python3 script/test.py --config ./configs/multi_pred/Open_LT/OLTR/Drugbank.json
 ```
 
 ### Training output
-Each training process will generate a log (e.g., hiv_DGL_GCN_Transformer_MLP_2022-04-28-20-30.log) in `./output/${DATASET_NAME}/logs`, and the models in `./output/${DATASET_NAME}/models/${EXP_ID}`. 
+Each training process will generate a log (e.g., hiv_DGL_GCN_Transformer_MLP_2022-04-28-20-30.log) in `./output/{DATASET_NAME}/logs`, and the models in `./output/{DATASET_NAME}/models/{EXP_ID}`. 
 
 ### Testing output
 
-Note that before testing, you need to specify the training experiment id in cfg['test']['exp_id']. Each testing process will generate a log and a .pdf image of confusion matrix (e.g., BBB_Martins_Transformer_Transformer_MLP_2022-05-09-11-55.pdf) in `./output/${DATASET_NAME}/test`.
+Note that before testing, you need to specify the training experiment id in cfg['test']['exp_id']. Each testing process will generate a log and a .pdf image of confusion matrix (e.g., BBB_Martins_Transformer_Transformer_MLP_2022-05-09-11-55.pdf) in `./output/{DATASET_NAME}/test`.
 
 ### Testing trained models of a dataset all at once
 
-To test trained models all at once, specify the "root_path" in `./test_all.py` by the directory where all training logs are stored, i.e., ``root_path = ./output/${DATASET_NAME}/logs``. Then run the following command line
+To test trained models all at once, specify the "root_path" in `./test_all.py` by the directory where all training logs are stored, i.e., ``root_path = ./output/{DATASET_NAME}/logs``. Then run the following command line
 
 ```bash
 python3 test_all.py 
@@ -248,24 +248,21 @@ python3 test_all.py
 
 ## Datasets
 
-ImDrug is hosted on Google Cloud and Google Drive.
-
-For manual download, please use this [link](https://drive.google.com/drive/folders/16dSuqq-Fh6iGqjPL1phtQT3C_K70cCfK) (***recommended***).
-
-Alternatively, if you run any of the command lines in [Running Examples](#running-examples), the necessary datasets will be automatically downloaded to the `path` specified in `./lib/config/default.py`, from https://storage.googleapis.com/imdrug_data/{$DATASET_NAME}.
+ImDrug is hosted on [Harvard Dataverse](https://doi.org/10.7910/DVN/TEXUKR) and [Google Drive](https://drive.google.com/drive/folders/16dSuqq-Fh6iGqjPL1phtQT3C_K70cCfK), both are available for manual download. Alternatively, 
+if you run any of the command lines in [Running Examples](#running-examples), the necessary datasets will be automatically downloaded to the `path` specified in `./lib/config/default.py`, from [Harvard Dataverse](https://doi.org/10.7910/DVN/TEXUKR).
 
 Complete list of dataset_names:
 - bbb_martins.tab
 - hiv.tab
 - tox21.tab
-- qm9.csv
-- sbap.csv
-- drugbank.csv
-- uspto_1k_TPL.csv
-- uspto_500_MT.csv
-- uspto_50k.csv
-- uspto_catalyst.csv
-- uspto_yields.csv
+- qm9.tab
+- sbap.tab
+- drugbank.tab
+- uspto_1k_TPL.tab
+- uspto_500_MT.tab
+- uspto_50k.tab
+- uspto_catalyst.tab
+- uspto_yields.tab
 
 ## Cite Us
 ```
@@ -279,7 +276,7 @@ Complete list of dataset_names:
 ```
 
 ## License
-ImDrug codebase is under the MIT license. For individual dataset usage, the dataset license will come up soon.
+ImDrug codebase is under the MIT license. The datasets are hosted on Harvard Dataverse under the CC0 1.0.
 
 ## Contact
 

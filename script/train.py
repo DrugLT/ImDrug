@@ -97,7 +97,7 @@ def train():
             "device": device,
         }
         criterion = eval(cfg['loss']['type'])(para_dict)
-        num_class_list = dataset_dic['hist']
+        num_class_list = None
     else:
         raise NotImplementedError
     epoch_number = cfg['train']['max_epoch']
@@ -284,19 +284,20 @@ def train():
 if __name__ == "__main__":
 
 
-    path = "../configs/multi_pred/LT_Classification/baseline/USPTO-50k.json"
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--config',
         type=str,
-        default=path)
+        default=None)
 
     args = parser.parse_args()
     cfg = config
 
-    with open(args.config, "r") as f:
-        exp_params = json.load(f)
+    if args.config is not None:
+        with open(args.config, "r") as f:
+            exp_params = json.load(f)
+    else:
+        exp_params = {'baseline': 'Default_cls'}
 
     cfg = set_baseline(exp_params, cfg)
     cfg = deep_update_dict(exp_params, cfg)

@@ -68,6 +68,10 @@ def get_label_weight(df, label_weight_name='Y_Weight'):
 		df[label_weight_name] = 1/len(df)
 	return df
 
+def relabel(lbl, cls_labels):
+	cls_label_lst = list(cls_labels)
+	return cls_label_lst.index(lbl)
+
 def create_open_split_byclass(df, open_frac, label_name='Y', label_weight_name='Y_Weight', lt_label_name='LT_Class', num_class=10, label_type='classification', scale=None):
 	"""split whole dataset into closed set and open set (for testing only), class by class
 
@@ -80,7 +84,8 @@ def create_open_split_byclass(df, open_frac, label_name='Y', label_weight_name='
 	num_open_classes = int(np.ceil(len(cls_labels) * open_frac))
 	# open_cls_indices = np.argpartition(hist, num_open_classes)[:num_open_classes]
 	open_cls_indices = cls_labels[-num_open_classes:]
-	print(hist, open_cls_indices)
+	print('Label distribution: ', hist)
+	print('Open classes: ', open_cls_indices)
 
 	df_cpy = copy.deepcopy(df)
 	for i, open_cls_idx in enumerate(open_cls_indices):
@@ -94,6 +99,13 @@ def create_open_split_byclass(df, open_frac, label_name='Y', label_weight_name='
 	open_df = get_label_weight(open_df, label_weight_name)
 
 	closed_df = df[~df.index.isin(open_df.index)]
+
+	# relabel indices of the closed set for training/validation, to avoid index mismatch when calculating losses such as cross entropy
+	closed_df[label_name] = closed_df[label_name].apply(lambda x: relabel(x, cls_labels))
+
+	# relabel indices of the open set as one outlier class, thus formulating testing as anomalu detection 
+	open_df[label_name] = len(cls_labels) - num_open_classes
+	open_df[lt_label_name] = 'open'
 	return closed_df, open_df
 
 

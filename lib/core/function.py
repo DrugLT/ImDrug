@@ -330,11 +330,12 @@ def test_model(
             lt_results.append(result)
 
             logger.info(pbar_str)
-
-        m = ConfusionMatrix(len(set(labels)))
-        m.update(np.array(labels), np.array(preds))
-        m.plot_confusion_matrix()
-        plt.savefig(logger.handlers[0].baseFilename.replace('.log', '.pdf'))
+        
+        if cfg['setting']['type'] not in ['LT Regression', 'LT Generation']:
+            m = ConfusionMatrix(len(set(labels)))
+            m.update(np.array(labels), np.array(preds))
+            m.plot_confusion_matrix()
+            plt.savefig(logger.handlers[0].baseFilename.replace('.log', '.pdf'))
             
 
     return lt_results, lt_metrics

@@ -13,7 +13,7 @@
     },
     "baseline": "Default_reg",
     "test": {
-        "exp_id": "qm9_DGL_GCN_CrossEntropy_0_MLP_2022-06-09-00-10-53-662280"
+        "exp_id": "qm9_DGL_GCN_LDS_2_MLP_2022-10-17-17-01-07-439926"
     },
     "setting": {
         "type": "LT Regression",

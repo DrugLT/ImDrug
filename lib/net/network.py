@@ -45,44 +45,55 @@ class Network(nn.Module):
         #         raise ValueError('network pretrained model error')
 
     def forward(self, x, **kwargs):
-        if "feature_flag" in kwargs or "feature_cb" in kwargs or "feature_rb" in kwargs:
-            x, att_mat_lst = self.extract_feature(x, **kwargs)
+        if "attention_flag" in kwargs: # The model outputs attention maps
+            if "feature_flag" in kwargs or "feature_cb" in kwargs or "feature_rb" in kwargs:
+                x, att_mat_lst = self.extract_feature(x, **kwargs)
+                att_mats = []
+                for att_mat in att_mat_lst:
+                    if len(att_mat):
+                        att_mat = torch.stack(att_mat).squeeze()
+                        att_mat = torch.mean(att_mat, dim=(2, 3)) # average over all heads
+                    att_mats.append(att_mat)
+                return x, att_mats
+            elif 'feature_maps_flag' in kwargs:
+                return self.extract_feature_maps(x, **kwargs)
+
+            x, att_mat_lst = self.extract_feature(x, attention_flag=True)
+
             att_mats = []
             for att_mat in att_mat_lst:
-                att_mat = torch.stack(att_mat).squeeze()
-                att_mat = torch.mean(att_mat, dim=(2, 3)) # average over all heads
-                # print('att_mat', att_mat.shape)
-                # print('att_mat', att_mat[:, 0])
+                if len(att_mat):
+                    att_mat = torch.stack(att_mat).squeeze(1)
+                    att_mat = torch.mean(att_mat, dim=1)
                 att_mats.append(att_mat)
-            return x, att_mats
-        elif "head_flag" in kwargs:
-            return self.head(x)
-        elif 'feature_maps_flag' in kwargs:
-            return self.extract_feature_maps(x)
-        elif 'layer' in kwargs and 'index' in kwargs:
-            if kwargs['layer'] in ['layer1', 'layer2', 'layer3']:
-                x = self.backbone.forward(x, index=kwargs['index'], layer=kwargs['layer'], coef=kwargs['coef'])
-            else:
-                x = self.backbone(x)
-            x = self.module(x)
-            if kwargs['layer'] == 'pool':
-                x = kwargs['coef']*x+(1-kwargs['coef'])*x[kwargs['index']]
-            x = x.view(x.shape[0], -1)
             x = self.head(x)
-            if kwargs['layer'] == 'fc':
-                x = kwargs['coef']*x + (1-kwargs['coef'])*x[kwargs['index']]
+            return x, att_mats
+
+        else:
+            if "feature_flag" in kwargs or "feature_cb" in kwargs or "feature_rb" in kwargs:
+                x = self.extract_feature(x, **kwargs)
+                return x
+            elif "head_flag" in kwargs:
+                return self.head(x)
+            elif 'feature_maps_flag' in kwargs:
+                return self.extract_feature_maps(x)
+            elif 'layer' in kwargs and 'index' in kwargs:
+                if kwargs['layer'] in ['layer1', 'layer2', 'layer3']:
+                    x = self.backbone.forward(x, index=kwargs['index'], layer=kwargs['layer'], coef=kwargs['coef'])
+                else:
+                    x = self.backbone(x)
+                x = self.module(x)
+                if kwargs['layer'] == 'pool':
+                    x = kwargs['coef']*x+(1-kwargs['coef'])*x[kwargs['index']]
+                x = x.view(x.shape[0], -1)
+                x = self.head(x)
+                if kwargs['layer'] == 'fc':
+                    x = kwargs['coef']*x + (1-kwargs['coef'])*x[kwargs['index']]
+                return x
+
+            x = self.extract_feature(x)
+            x = self.head(x)
             return x
-
-        x, att_mat_lst = self.extract_feature(x)
-
-        att_mats = []
-        for att_mat in att_mat_lst:
-            att_mat = torch.stack(att_mat).squeeze(1)
-            att_mat = torch.mean(att_mat, dim=1)
-            # print('att_mat', att_mat.shape)
-            att_mats.append(att_mat)
-        x = self.head(x)
-        return x, att_mats
 
     def to(self, device=None):
         # if device is None:
@@ -122,33 +133,36 @@ class Network(nn.Module):
         self.load_state_dict(torch.load(model_file, map_location=map_location)['state_dict'])
 
     def extract_feature(self, inputs:list, **kwargs):
-        x, att_mat_lst = self.extract_feature_maps(inputs)
-        # print('x', x, x.shape)
-        x = x.view(x.shape[0], -1)
-        # print('x_view', x, x.shape)
-        return x, att_mat_lst
+        if "attention_flag" in kwargs:
+            x, att_mat_lst = self.extract_feature_maps(inputs, **kwargs)
+            x = x.view(x.shape[0], -1)
+            return x, att_mat_lst
+        else:
+            x = self.extract_feature_maps(inputs)
+            x = x.view(x.shape[0], -1)
+            return x
 
-    def extract_feature_maps(self, inputs: list):
+    def extract_feature_maps(self, inputs: list, **kwargs):
         feats = []
-        att_mat_lst = [] # list of attention matrices, each element corresponds to the attention matrix of a backbone model: [att_mat_backbone1, ..., att_mat_backboneN]
+        if "attention_flag" in kwargs:
+            att_mat_lst = [] # list of attention matrices, each element corresponds to the attention matrix of a backbone model: [att_mat_backbone1, ..., att_mat_backboneN]
         for x, backbone_kw in zip(inputs, self.backbone_kws):
             if 'protein' in backbone_kw and self.cfg['dataset']['protein_encoding'] == 'Transformer':
                 x = torch.transpose(x, 0, 1)
             elif 'drug' in backbone_kw  and self.cfg['dataset']['drug_encoding'] == 'Transformer':
                 x = torch.transpose(x, 0, 1)
-            # feat = self.backbone[backbone_kw](x)
             feat = getattr(self, backbone_kw)(x) # feat = (feature_map, attention_map) if the model outputs attention maps
 
-            if isinstance(feat, tuple):
+            if isinstance(feat, tuple) and "attention_flag" in kwargs:
                 att_mat_lst.append(feat[1])
                 feat = feat[0]
-            else:
-                att_mat_lst.append([])
-            # print('feat', feat, feat.shape)
             feats.append(feat)
 
         x = self.neck(feats, self.input_kws)
-        return x, att_mat_lst
+        if "attention_flag" in kwargs:
+            return x, att_mat_lst
+        else:
+            return x
 
     def _get_backbone(self):
         # self.backbone = {}

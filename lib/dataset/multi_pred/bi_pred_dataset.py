@@ -187,11 +187,11 @@ class DataLoader(base_dataset.DataLoader):
                 method = method.replace('open-', '')
 
                 if method == 'random':
-                    return create_fold_byclass(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
+                    data_dic = create_fold_byclass(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
                 elif method == 'cold_' + self.entity1_name.lower():
-                    return create_fold_setting_cold_byclass(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, entities=self.entity1_name, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
+                    data_dic = create_fold_setting_cold_byclass(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, entities=self.entity1_name, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
                 elif method == 'cold_' + self.entity2_name.lower():
-                    return create_fold_setting_cold_byclass(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, entities=self.entity2_name, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
+                    data_dic = create_fold_setting_cold_byclass(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, entities=self.entity2_name, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
                 elif method == 'cold_split':
                     if (
                         column_name is None or
@@ -203,11 +203,13 @@ class DataLoader(base_dataset.DataLoader):
                         )
                     return create_fold_setting_cold_byclass(df=closed_df, seed=seed, frac=frac, column_name=column_name, lt_frac=lt_frac, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
                 elif method == 'combination':
-                    return create_combination_split_by_class(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
+                    data_dic = create_combination_split_by_class(df=closed_df, seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
                 elif method == 'time':
                     if time_column is None:
                         raise ValueError('Please specify the column that has the time variable using time_column.')
-                    return create_fold_time_byclass(df=closed_df, frac=frac, lt_frac=lt_frac, time_column=time_column, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
+                    data_dic = create_fold_time_byclass(df=closed_df, frac=frac, lt_frac=lt_frac, time_column=time_column, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
+                elif method == 'standard':
+                    data_dic = create_standard_fold(df=closed_df, fold_seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name, label_weight_name=label_weight_name, lt_label_name=lt_label_name, num_class=num_class, label_type=label_type, scale=scale)
                 else:
                     raise AttributeError(
                         "Please select method from random, time, combination or cold_split."
@@ -238,6 +240,8 @@ class DataLoader(base_dataset.DataLoader):
                     if time_column is None:
                         raise ValueError('Please specify the column that has the time variable using time_column.')
                     return create_fold_time_byclass(df=df, frac=frac, date_column=time_column, lt_frac=lt_frac, label_name=label_name, num_class=num_class, label_type=label_type, scale=scale)
+                elif method == 'standard':
+                    return create_standard_fold(df=df, fold_seed=seed, frac=frac, lt_frac=lt_frac, label_name=label_name, label_weight_name=label_weight_name, lt_label_name=lt_label_name, num_class=num_class, label_type=label_type, scale=scale)
                 else:
                     raise AttributeError(
                         "Please select method from random, time, combination or cold_split."
